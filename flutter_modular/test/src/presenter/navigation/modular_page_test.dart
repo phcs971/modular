@@ -13,6 +13,15 @@ class BuildContextMock extends Mock implements BuildContext {}
 
 class AnimationMock<T> extends Mock implements Animation<T> {}
 
+class FakeRoute<T> extends Route<T> {
+  final BuildContext context;
+  final WidgetBuilder builder;
+  @override
+  final RouteSettings settings;
+
+  FakeRoute(this.context, this.builder, this.settings);
+}
+
 void main() {
   test('ModularPage.empty', () {
     final page = ModularPage.empty();
@@ -89,6 +98,26 @@ void main() {
 
     final pageRouteGenerate = page.createRoute(context);
     expect(pageRouteGenerate, isA<Route>());
+  });
+
+  test('createRoute custom route builder', () {
+    final args = ModularArguments.empty();
+    final context = BuildContextMock();
+    final route = ParallelRouteMock();
+    final widget = Container();
+    when(() => route.child).thenReturn((_) => widget);
+    when(() => route.uri).thenReturn(Uri.parse('/'));
+    when(() => route.customRouteBuilder).thenReturn(FakeRoute.new);
+
+    final page = ModularPage(args: args, flags: ModularFlags(), route: route);
+    final pageRoute = page.createRoute(context);
+    expect(
+      pageRoute,
+      isA<FakeRoute>()
+          .having((r) => r.builder(context), 'child', widget)
+          .having((r) => r.context, 'context', context)
+          .having((r) => r.settings, 'settings', page),
+    );
   });
 
   test('createRoute custom', () {

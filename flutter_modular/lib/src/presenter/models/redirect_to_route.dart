@@ -29,6 +29,7 @@ class RedirectRoute extends ChildRoute {
     Uri? uri,
     Map<ModularKey, ModularRoute>? routeMap,
     Map<Type, Module>? innerModules,
+    RouteBuilder? customRouteBuilder,
   }) {
     return this;
   }

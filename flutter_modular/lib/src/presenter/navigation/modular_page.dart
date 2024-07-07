@@ -37,6 +37,11 @@ class ModularPage<T> extends Page<T> {
       throw ModularPageException('Child not be null');
     }
 
+    final customRouteBuilder = route.customRouteBuilder;
+    if (customRouteBuilder != null) {
+      return customRouteBuilder(context, (_) => page, this) as Route<T>;
+    }
+
     final transitionType = route.transition ?? TransitionType.defaultTransition;
 
     if (transitionType == TransitionType.custom &&

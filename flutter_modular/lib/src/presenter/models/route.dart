@@ -5,7 +5,11 @@ import 'package:modular_core/modular_core.dart';
 import '../navigation/transitions/transitions.dart';
 
 typedef ModularChild = Widget Function(BuildContext context);
-typedef RouteBuilder<T> = Route<T> Function(WidgetBuilder, RouteSettings);
+typedef RouteBuilder<T> = Route<T> Function(
+  BuildContext context,
+  WidgetBuilder builder,
+  RouteSettings settings,
+);
 
 class ParallelRoute<T> extends ModularRoute {
   /// Whether the route should remain in memory when it is inactive.
@@ -39,6 +43,10 @@ class ParallelRoute<T> extends ModularRoute {
   /// Default is false;
   final bool isFullscreenDialog;
 
+  /// Defines a custom route builder.
+  /// It will ignore the any transition related parameters.
+  final RouteBuilder<T>? customRouteBuilder;
+
   @internal
   final void Function(dynamic)? popCallback;
 
@@ -53,6 +61,7 @@ class ParallelRoute<T> extends ModularRoute {
     this.customTransition,
     this.duration,
     this.isFullscreenDialog = false,
+    this.customRouteBuilder,
     List<ModularRoute> children = const [],
     List<Middleware> middlewares = const [],
     Module? module,
@@ -77,6 +86,7 @@ class ParallelRoute<T> extends ModularRoute {
     Duration? duration,
     TransitionType? transition,
     bool isFullscreenDialog = false,
+    RouteBuilder<T>? customRouteBuilder,
     List<Middleware> middlewares = const [],
   }) {
     return ParallelRoute<T>(
@@ -88,6 +98,7 @@ class ParallelRoute<T> extends ModularRoute {
       duration: duration,
       isFullscreenDialog: isFullscreenDialog,
       middlewares: middlewares,
+      customRouteBuilder: customRouteBuilder,
     );
   }
   factory ParallelRoute.empty() {
@@ -143,6 +154,7 @@ class ParallelRoute<T> extends ModularRoute {
     Uri? uri,
     Map<ModularKey, ModularRoute>? routeMap,
     Map<Type, Module>? innerModules,
+    RouteBuilder<T>? customRouteBuilder,
   }) {
     return ParallelRoute<T>(
       child: child ?? this.child,
@@ -159,6 +171,7 @@ class ParallelRoute<T> extends ModularRoute {
       parent: parent ?? this.parent,
       uri: uri ?? this.uri,
       innerModules: innerModules ?? this.innerModules,
+      customRouteBuilder: customRouteBuilder ?? this.customRouteBuilder,
     );
   }
 

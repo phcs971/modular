@@ -10,6 +10,7 @@ extension RouteManageExt on RouteManager {
     TransitionType? transition,
     bool maintainState = true,
     List<RouteGuard> guards = const [],
+    RouteBuilder? customRouteBuilder,
   }) {
     add(ChildRoute(
       name,
@@ -20,6 +21,7 @@ extension RouteManageExt on RouteManager {
       transition: transition,
       maintainState: maintainState,
       guards: guards,
+      customRouteBuilder: customRouteBuilder,
     ));
   }
 

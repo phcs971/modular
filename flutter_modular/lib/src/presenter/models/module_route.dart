@@ -38,6 +38,7 @@ class ModuleRoute<T> extends ParallelRoute<T> {
     List<Middleware> middlewares = const [],
     Uri? uri,
     Map<Type, Module> innerModules = const {},
+    RouteBuilder<T>? customRouteBuilder,
   })  : assert(
           !name.contains('/:'),
           'ModuleRoute should not contain dynamic route',
@@ -57,6 +58,7 @@ class ModuleRoute<T> extends ParallelRoute<T> {
           middlewares: middlewares,
           uri: uri ?? Uri.parse('/'),
           innerModules: innerModules,
+          customRouteBuilder: customRouteBuilder,
         );
 
   @override
@@ -76,6 +78,7 @@ class ModuleRoute<T> extends ParallelRoute<T> {
     Uri? uri,
     Map<ModularKey, ModularRoute>? routeMap,
     Map<Type, Module>? innerModules,
+    RouteBuilder<T>? customRouteBuilder,
   }) {
     return ModuleRoute<T>._start(
       child: child ?? this.child,
@@ -92,6 +95,7 @@ class ModuleRoute<T> extends ParallelRoute<T> {
       uri: uri ?? this.uri,
       module: module ?? this.module,
       innerModules: innerModules ?? this.innerModules,
+      customRouteBuilder: customRouteBuilder ?? this.customRouteBuilder,
     );
   }
 }

@@ -15,6 +15,7 @@ class ChildRoute<T> extends ParallelRoute<T> {
     bool isFullscreenDialog = false,
     bool maintainState = true,
     List<RouteGuard> guards = const [],
+    RouteBuilder<T>? customRouteBuilder,
   })  : assert(name.startsWith('/'), 'The name must always start with a /'),
         assert(
           children.where((e) => e.name == name).isEmpty,
@@ -30,5 +31,6 @@ class ChildRoute<T> extends ParallelRoute<T> {
           transition: transition,
           isFullscreenDialog: isFullscreenDialog,
           middlewares: guards,
+          customRouteBuilder: customRouteBuilder,
         );
 }
