@@ -1,3 +1,6 @@
+## [6.3.4] - 2024-07-07
+- Add: optional customRouteBuilder in `ParallelRoute`
+
 ## [6.3.3] - 2024-04-08
 - Fix Deep Link
 
